@@ -60,7 +60,6 @@ def main(args):
 
     for student_id, student_name in students.items():
         print(f'Best submissions for student "{student_name}":')
-        
         try:
             resp = requests.get(endpoints['submissions'], {'id': student_id}, auth=BearerAuth(token))
             resp.raise_for_status()
@@ -74,6 +73,7 @@ def main(args):
                     dump_code(submission["code"], problem["name"], student_name)
             
         except requests.exceptions.HTTPError as error:
+            print(resp.json())
             raise SystemExit(error)
         except requests.exceptions.RequestException as error:
             raise SystemExit(error)
