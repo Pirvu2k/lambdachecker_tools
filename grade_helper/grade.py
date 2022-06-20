@@ -31,8 +31,8 @@ def get_students(student_arg):
 
     return {student_arg: 'Student'}
 
-def filter_and_print_submission(submission, problem_prefix=None, problem_id=None, problems=None):
-    problem = get_problem_info(submission['problem_id'])
+def filter_and_print_submission(submission, problem_prefix=None, problem_id=None, problems=None, token=None):
+    problem = get_problem_info(submission['problem_id'], token)
 
     if problem_prefix and not problem['name'].startswith(problem_prefix):
         return None
@@ -67,7 +67,7 @@ def main(args):
             submissions = resp.json()
 
             for submission in submissions:
-                problem = filter_and_print_submission(submission, args.problem_prefix, args.problem_id, args.problems)
+                problem = filter_and_print_submission(submission, args.problem_prefix, args.problem_id, args.problems, token)
                 
                 if args.dump_code and problem:
                     dump_code(submission["code"], problem["name"], student_name)

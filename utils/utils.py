@@ -1,12 +1,12 @@
 import requests
 from getpass import getpass
 
-api_url = 'https://api.lambdachecker.io'
+api_url = 'https://apibeta.lambdachecker.io'
 
 endpoints = {
     'login': f'{api_url}/users/login',
     'submissions': f'{api_url}/user-subm', # in reality returns best submission for each problem
-    'problem_info': f'{api_url}/problems/{{id}}' # double curly used for format strings
+    'problem_info': f'{api_url}/problems/{{id}}?contest_id=-1' # double curly used for format strings
 }
 
 class BearerAuth(requests.auth.AuthBase):
@@ -42,9 +42,9 @@ def login():
     
     return resp['token']
 
-def get_problem_info(problem_id):
+def get_problem_info(problem_id, token):
     try:
-        resp = requests.get(endpoints['problem_info'].format(id = problem_id))
+        resp = requests.get(endpoints['problem_info'].format(id = problem_id), auth=BearerAuth(token))
         resp.raise_for_status()
         
         return resp.json()
